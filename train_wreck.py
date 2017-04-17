@@ -1,18 +1,18 @@
+import numpy as np
+import pandas as pd
 from pyspark import SparkContext,SparkConf
 from pyspark.sql import SQLContext,Row  
-import numpy as np
 
 
-conf=(SparkConf().setMaster("local").setAppName("Train_Wreck_Analysis").set("spark.executor.memory","lg"))
+
+conf=SparkConf().setMaster("master").setAppName("Train_Wreck_Analysis")
 sc = SparkContext(conf=conf)
 sqlContext=SQLContext(sc)
 
 
-data_1 = sc.textFile("/home/mandar/Python_Projects/Train_Wreck/data/train_wreck.csv")
-#print "------------------------ \nOutput\n\n\nTotal number of rows in spark rdd : "+ str(data.count())  
-#print "\n\n\n-------------------------------------------------------"
-#print data.top(3)
+df1=pd.read_csv('/home/mandar/Python_Projects/Train_Wreck/data/train_wreck.csv', na_values=['.'])
+#print df1
 
-data_2= data_1.map(lambda x: x.split(","))
-print data_2.take(4)
+#df2=pd.DataFrame(df1.)
+
 
