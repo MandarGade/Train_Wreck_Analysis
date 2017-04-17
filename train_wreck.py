@@ -31,27 +31,30 @@ def modifyRow(df2):
 	df4=df4.rename(columns={0:'City,State'})
 	return df4
 
-def createStatesList(df3):
-	for row in df3:
-		print row
+def createStatesList(df3):	
+#	print df3
+	for row in df3['City,State']:
 		if "," in str(row):
-			print str(row)
-		else:
-			continue
+			states_List.append(str(row).split(",",1)[1])
 		
-#	print city_state_list
-#	df5=pd.DataFrame(states_List)
-#	df5=df5.rename(columns={0:'State'})
-#	print df5	
+	df5=pd.DataFrame(states_List)
+	df5=df5.rename(columns={0:'State'})
+	return df5	
 
 
-df3=modifyRow(df2)
-print df3
+city_State_dataFrame=modifyRow(df2)
+#print cityState_dataFrame
 
-#createStatesList(df3)
+states_dataFrame=createStatesList(city_State_dataFrame)
+#print states_dataFrame
 
-#cities_dataFrame= df1[df1['City, State'].str.contains(',', na=False)]
-#print cities_dataFrame
+halfComplete_dataFrame= df1[df1['City, State'].str.contains(',', na=False)]
+#print halfComplete_dataFrame
+
+cities_dataFrame=pd.DataFrame(halfComplete_dataFrame['City, State'])
+cities_dataFrame=cities_dataFrame.rename(columns={'City, State':'City'})
+print cities_dataFrame
+
 
 #df2= np.where(df1['City, State'].str.contains(','));"N/A,"+df1['City, State']
 #print df2
