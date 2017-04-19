@@ -9,6 +9,7 @@ from mpl_toolkits.basemap import Basemap
 from geopy.geocoders import Nominatim
 from matplotlib.patches import Polygon
 
+
 #from pyspark import SparkContext,SparkConf
 #from pyspark.sql import SQLContext,Row  
 
@@ -29,6 +30,7 @@ city_state_list=[]
 states_List=[]
 topTenCitiesList=[]
 topTenStates=[]
+
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
@@ -103,7 +105,7 @@ def cities_visualization(df):
 		lat_tpl=lat_tpl+(loc.latitude,)
 	x, y = map(long_tpl,lat_tpl)
 	map.plot(x,y,'ro',markersize=7)
-#	plt.text(long_tpl[i],lat_tpl[i],val,fontsize=12,fontweight='bold',ha='left',va='center',color='k',bbox=dict(facecolor='b',alpha=0.2))
+#	plt.text(long_tpl[i],lat_tpl[i],val,fontsize=12,fontweight='bold',ha='left',va='center',color='k',bbox=dict(facecolor='b',alpha=0.2))	
 	plt.show()
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -114,9 +116,34 @@ def cities_visualization(df):
 #---------------------------------------------------------------------------------------------------------------------------------
 
 def states_visualization(df):
-	for row in df['State']:
-		topTenStates.append(row)
-	print topTenStates
+	#states={}
+	state=[]
+	count=[]
+	states_tpl=()
+	for a, b in df.itertuples(index=False):
+	    	state.append(a)
+	    	count.append(b)
+	    	states_tpl=states_tpl+(a,)
+	states=zip(state,count)
+	states=dict(states)
+	#print states
+
+
+	
+	y_pos = np.arange(len(states_tpl))
+	performance = count
+	plt.figure(figsize=(12, 8))
+	plt.bar(y_pos, performance, align='center', alpha=0.5)
+	plt.xticks(y_pos, states_tpl)
+	plt.ylabel('Number of Accidents')
+	plt.title('Top ten states for train accidents')
+	 
+	plt.show()
+
+
+
+
+
 
 
 
@@ -183,7 +210,10 @@ top_ten_cities_dataFrame=top_cities_dataFrame.sort_values(by='count', ascending=
 # Calling Visualization Methods
 #
 #
-cities_visualization(top_ten_cities_dataFrame)
+#cities_visualization(top_ten_cities_dataFrame)
 #states_visualization(top_ten_states_dataFrame)
 
 
+if __name__ == '__main__':
+	cities_visualization(top_ten_cities_dataFrame)
+	states_visualization(top_ten_states_dataFrame)
