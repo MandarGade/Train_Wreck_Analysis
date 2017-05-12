@@ -2,25 +2,16 @@ import numpy as np
 import pandas as pd
 import geocoder
 import math
+import folium
 #import gmplot
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
+#from mpl_toolkits.basemap import Basemap
 from geopy.geocoders import Nominatim
 from matplotlib.patches import Polygon
 
 
-#from pyspark import SparkContext,SparkConf
-#from pyspark.sql import SQLContext,Row  
-
-
-
-#conf=SparkConf().setMaster("master").setAppName("Train_Wreck_Analysis")
-#sc = SparkContext(conf=conf)
-#sqlContext=SQLContext(sc)
-
-
-df1=pd.read_csv('/home/mandar/Python_Projects/Train_Wreck/data/train_wreck.csv', na_values=['.'])
+df1=pd.read_csv('data/train_wreck.csv', na_values=['.'])
 #print df1
 
 df2=df1['City, State']
@@ -66,35 +57,28 @@ def createStatesList(df3):
 
 
 
-
 #---------------------------------------------------------------------------------------------------------------------------------
 
-def cities_visualization(df):
+def cities_visualization():
 	scale = 5
 	lat_tpl=()
 	long_tpl=()
 	cities_tpl=()
+	'''
+		create a dataframe without null row or column values 
+	'''
+	halfComplete_dataFrame= df1[df1['City, State'].str.contains(',', na=False)]
 
-#	map = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
-#        projection='mill')
-#	map.readshapefile('st99_d00', name='states', drawbounds=True)
-	#map.drawcoastlines()
-#	map.drawstates()
-#	map.drawmapboundary(fill_color="#FFFFFF")
-
-	map = Basemap(projection='mill',llcrnrlat=20,urcrnrlat=50,\
-            llcrnrlon=-130,urcrnrlon=-60,resolution='c')
-	map.drawstates()
-	map.drawcoastlines()
-	map.drawcountries()
-	map.drawmapboundary(fill_color='#00bfff')
-	map.fillcontinents(color='#eedd82',lake_color='#00bfff')
+	cities_dataFrame=pd.DataFrame(halfComplete_dataFrame['City, State'])
+	cities_dataFrame=cities_dataFrame.rename(columns={'City, State':'City'})
+	top_cities_dataFrame=cities_dataFrame.groupby(['City']).size().reset_index().rename(columns={0:'count'})
+	top_ten_cities_dataFrame=top_cities_dataFrame.sort_values(by='count', ascending=False).head(10)
 
 	geolocator = Nominatim()
 
 
 	lat_long_list=[]
-	for row in df['City']:
+	for row in top_ten_cities_dataFrame['City']:
 		topTenCitiesList.append(str(row))
 	#print topTenCitiesList
 
@@ -103,117 +87,84 @@ def cities_visualization(df):
 		cities_tpl=cities_tpl+(val,)
 		long_tpl=long_tpl+(loc.longitude,)
 		lat_tpl=lat_tpl+(loc.latitude,)
-	x, y = map(long_tpl,lat_tpl)
-	map.plot(x,y,'ro',markersize=7)
-#	plt.text(long_tpl[i],lat_tpl[i],val,fontsize=12,fontweight='bold',ha='left',va='center',color='k',bbox=dict(facecolor='b',alpha=0.2))	
-	plt.show()
 
-#---------------------------------------------------------------------------------------------------------------------------------
+	print lat_tpl
+	print long_tpl
+	print cities_tpl
 
 
 
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
-def states_visualization(df):
+
+
+
+#---------------------------------------------------------------------------------------------------------------------------------
+
+def states_visualization():
+	'''
+		create a dataframe for city and states values
+	'''
+	city_State_dataFrame=modifyRow(df2)
+	'''
+		finding top ten states with most accidents
+	'''
+	states_dataFrame=createStatesList(city_State_dataFrame)
+	states_dataFrame.apply(lambda x: x.astype(str).str.upper())
+	states_dataFrame['State'] = states_dataFrame['State'].map(lambda x: x.strip())
+#	states_dataFrame['States'].str.split(',').str.get(1)
+	states_dataFrame['State'] = states_dataFrame['State'].apply(lambda x: x.split(',', 1)[-1])
+	states_dataFrame['State'] = states_dataFrame['State'].map(lambda x: x.strip())
+	#print states_dataFrame
+	top_states_dataFrame=states_dataFrame.groupby(['State']).size().reset_index().rename(columns={0:'count'})
+	#print top_states_dataFrame
+	all_states_dataFrame=top_states_dataFrame.sort_values(by='count', ascending=False)
+#	print all_states_dataFrame
+	all_states=[]
+	all_states_count=[]
+	all_states_tpl=()
+	for a, b in all_states_dataFrame.itertuples(index=False):
+	    	all_states.append(a)
+	    	all_states_count.append(b)
+	    	all_states_tpl=all_states_tpl+(a,)
+	#all_states=zip(all_states,all_states_count)
+	#all_states=dict(all_states)
+	print all_states
+
+	top_ten_states_dataFrame=top_states_dataFrame.sort_values(by='count', ascending=False).head(10)
+#	print top_ten_states_dataFrame
 	#states={}
 	state=[]
 	count=[]
 	states_tpl=()
-	for a, b in df.itertuples(index=False):
+	for a, b in top_ten_states_dataFrame.itertuples(index=False):
 	    	state.append(a)
 	    	count.append(b)
 	    	states_tpl=states_tpl+(a,)
-	states=zip(state,count)
-	states=dict(states)
+	#states=zip(state,count)
+	#states=dict(states)
+	
 	#print states
 
 
 	
 	y_pos = np.arange(len(states_tpl))
 	performance = count
-	plt.figure(figsize=(12, 8))
-	plt.bar(y_pos, performance, align='center', alpha=0.5)
+	plt.figure(figsize=(15,12))
+	plt.bar(y_pos, performance, align='center', alpha=0.6)
 	plt.xticks(y_pos, states_tpl)
 	plt.ylabel('Number of Accidents')
 	plt.title('Top ten states for train accidents')
-	 
-	plt.show()
+#	plt.savefig('static/images/barchart.png')
+#	plt.show()
+	
+	return state,count,all_states,all_states_count
 
 
 
-
-
-
-
-
-#---------------------------------------------------------------------------------------------------------------------------------
-
-
-
-#---------------------------------------------------------------------------------------------------------------------------------
-city_State_dataFrame=modifyRow(df2)
-#print cityState_dataFrame
-#---------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-#---------------------------------------------------------------------------------------------------------------------------------
-#
-# Findind top ten states with most accidents
-#
-#
-states_dataFrame=createStatesList(city_State_dataFrame)
-#print states_dataFrame
-top_states_dataFrame=states_dataFrame.groupby(['State']).size().reset_index().rename(columns={0:'count'})
-top_ten_states_dataFrame=top_states_dataFrame.sort_values(by='count', ascending=False).head(10)
-#print top_ten_states_dataFrame
-#---------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-#---------------------------------------------------------------------------------------------------------------------------------
-#
-# Creating a dataframe which has all rows information
-#
-#
-halfComplete_dataFrame= df1[df1['City, State'].str.contains(',', na=False)]
-#print halfComplete_dataFrame
-#---------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-#---------------------------------------------------------------------------------------------------------------------------------
-#
-# Findind top ten cities with most accidents
-#
-#
-cities_dataFrame=pd.DataFrame(halfComplete_dataFrame['City, State'])
-cities_dataFrame=cities_dataFrame.rename(columns={'City, State':'City'})
-top_cities_dataFrame=cities_dataFrame.groupby(['City']).size().reset_index().rename(columns={0:'count'})
-top_ten_cities_dataFrame=top_cities_dataFrame.sort_values(by='count', ascending=False).head(10)
-#
-#---------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-#---------------------------------------------------------------------------------------------------------------------------------
-#
-# Calling Visualization Methods
-#
-#
-#cities_visualization(top_ten_cities_dataFrame)
-#states_visualization(top_ten_states_dataFrame)
 
 
 if __name__ == '__main__':
-	cities_visualization(top_ten_cities_dataFrame)
-	states_visualization(top_ten_states_dataFrame)
+	cities_visualization()
+	states_visualization()

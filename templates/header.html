@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Train Wreck Header</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+	<script type="text/javascript" href="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<header style="background-color: #e6e6e6;">
+<!--
+	<p> started working </p> -->
+
+	<nav class="navbar navbar-inverse" style="background-color: #4d4d4d;">
+		<div class="container-fluid">
+
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/" style="color: white;">Train Wreck Analysis</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li><a href="/">Home</a></li>
+				<li><a href="/map/">Map</a></li>
+				<li><a href="/visuals/">Bar Chart</a></li>
+			</ul>
+
+		</div>
+	</nav>
+</header>
+
+<body>
+	<div class="container-fluid" align="center" style="min-height: 100%">
+		{% block body %}
+		{% endblock %}
+	</div>
+</body>
+</html>
