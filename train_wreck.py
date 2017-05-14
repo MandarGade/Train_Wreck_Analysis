@@ -11,6 +11,13 @@ from geopy.geocoders import Nominatim
 from matplotlib.patches import Polygon
 
 
+import bokeh.charts as bc
+from bokeh.plotting import output_file,show
+from bokeh.models import (
+  GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool
+)
+
+
 df1=pd.read_csv('data/train_wreck.csv', na_values=['.'])
 #print df1
 
@@ -21,7 +28,9 @@ city_state_list=[]
 states_List=[]
 topTenCitiesList=[]
 topTenStates=[]
-
+topTenCitiesCount=[]
+city_lat_list=[]
+city_long_list=[]
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
@@ -82,16 +91,42 @@ def cities_visualization():
 		topTenCitiesList.append(str(row))
 	#print topTenCitiesList
 
+	
+	for row in top_ten_cities_dataFrame['count']:
+    		topTenCitiesCount.append(row)
+    	
+		
+	#print topTenCitiesCount
+	
 	for i,val in enumerate(topTenCitiesList):
 		loc=geolocator.geocode(val)
-		cities_tpl=cities_tpl+(val,)
-		long_tpl=long_tpl+(loc.longitude,)
-		lat_tpl=lat_tpl+(loc.latitude,)
+		#cities_tpl=cities_tpl+(val,)
+		#long_tpl=long_tpl+(loc.longitude,)
+		#lat_tpl=lat_tpl+(loc.latitude,)
+		city_lat_list.append(loc.latitude)
+		city_long_list.append(loc.longitude)
 
-	print lat_tpl
-	print long_tpl
-	print cities_tpl
-
+	#print topTenCitiesList
+	#print topTenCitiesCount
+	#print city_lat_list
+	#print city_long_list
+	#print cities_tpl
+	map_options = GMapOptions(lat=39.8282, lng=-98.5795, map_type="roadmap", zoom=5)
+	plot = GMapPlot(
+    x_range=DataRange1d(), y_range=DataRange1d(), map_options=map_options, plot_width=1100, plot_height=800)
+	plot.title.text = "Top ten cities"
+	plot.api_key = "AIzaSyBfcQ8lTsXC5du_Mj0IyFLuXepDt_Euawo"
+	source = ColumnDataSource(
+    data=dict(
+        lat=city_lat_list,
+        lon=city_long_list,
+		#text=topTenCitiesList,
+    ))
+	circle = Circle(x="lon", y="lat", tags=topTenCitiesList, size=15, fill_color="blue", fill_alpha=0.8, line_color=None)
+	plot.add_glyph(source, circle)
+	plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
+	output_file("gmap_plot.html")
+	show(plot)
 
 
 
@@ -113,7 +148,7 @@ def states_visualization():
 	states_dataFrame=createStatesList(city_State_dataFrame)
 	states_dataFrame.apply(lambda x: x.astype(str).str.upper())
 	states_dataFrame['State'] = states_dataFrame['State'].map(lambda x: x.strip())
-#	states_dataFrame['States'].str.split(',').str.get(1)
+	#states_dataFrame['States'].str.split(',').str.get(1)
 	states_dataFrame['State'] = states_dataFrame['State'].apply(lambda x: x.split(',', 1)[-1])
 	states_dataFrame['State'] = states_dataFrame['State'].map(lambda x: x.strip())
 	#print states_dataFrame
@@ -123,17 +158,17 @@ def states_visualization():
 #	print all_states_dataFrame
 	all_states=[]
 	all_states_count=[]
-	all_states_tpl=()
+	#all_states_tpl=()
 	for a, b in all_states_dataFrame.itertuples(index=False):
 	    	all_states.append(a)
 	    	all_states_count.append(b)
-	    	all_states_tpl=all_states_tpl+(a,)
+	    	#all_states_tpl=all_states_tpl+(a,)
 	#all_states=zip(all_states,all_states_count)
 	#all_states=dict(all_states)
-	print all_states
+	#print all_states
 
 	top_ten_states_dataFrame=top_states_dataFrame.sort_values(by='count', ascending=False).head(10)
-#	print top_ten_states_dataFrame
+	print top_ten_states_dataFrame
 	#states={}
 	state=[]
 	count=[]
@@ -141,14 +176,19 @@ def states_visualization():
 	for a, b in top_ten_states_dataFrame.itertuples(index=False):
 	    	state.append(a)
 	    	count.append(b)
-	    	states_tpl=states_tpl+(a,)
+	    	#states_tpl=states_tpl+(a,)
 	#states=zip(state,count)
 	#states=dict(states)
 	
 	#print states
+	output_file('bar_graph.html')
+	plot = bc.Bar(data=top_ten_states_dataFrame,count='count',label='State')
+	show(plot)
+
+	bc.Bar
 
 
-	
+'''	
 	y_pos = np.arange(len(states_tpl))
 	performance = count
 	plt.figure(figsize=(15,12))
@@ -157,9 +197,11 @@ def states_visualization():
 	plt.ylabel('Number of Accidents')
 	plt.title('Top ten states for train accidents')
 #	plt.savefig('static/images/barchart.png')
-#	plt.show()
+	plt.show()
+
+ '''
 	
-	return state,count,all_states,all_states_count
+#	return state,count,all_states,all_states_count
 
 
 
@@ -167,4 +209,4 @@ def states_visualization():
 
 if __name__ == '__main__':
 	cities_visualization()
-	states_visualization()
+#	states_visualization()

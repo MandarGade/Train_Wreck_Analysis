@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bokeh Plot</title>
+        
+<link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css" type="text/css" />
+        
+<script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
+<script type="text/javascript">
+    Bokeh.set_log_level("info");
+</script>
+        <style>
+          html {
+            width: 100%;
+            height: 100%;
+          }
+          body {
+            width: 90%;
+            height: 100%;
+            margin: auto;
+          }
+        </style>
+    </head>
+    <body>
+        
+        <div class="bk-root">
+            <div class="bk-plotdiv" id="9c75c202-9109-4d88-b19e-d85627e3e10c"></div>
+        </div>
+        
+        <script type="text/javascript">
+            (function() {
+          var fn = function() {
+            Bokeh.safely(function() {
+              var docs_json = {"19ff9558-bc49-44f6-8d3d-c8cafdbeee29":{"roots":{"references":[{"attributes":{"api_key":"AIzaSyBfcQ8lTsXC5du_Mj0IyFLuXepDt_Euawo","map_options":{"id":"7ed6af1a-5ea4-41a0-a3db-8e6a98ec82e9","type":"GMapOptions"},"plot_height":800,"plot_width":1100,"renderers":[{"id":"a556891e-22b8-4031-91ff-ffe85a9cd425","type":"GlyphRenderer"},{"id":"e6d13713-8daf-4ef4-9e97-5154e282fc5a","type":"BoxAnnotation"}],"title":{"id":"722474f0-3a76-476a-9ddf-0a8e26156e8c","type":"Title"},"tool_events":{"id":"9556dc90-3c31-4bc6-9b9b-2ee2b963d9e1","type":"ToolEvents"},"toolbar":{"id":"740a2d01-24a7-478a-b59a-11ad712ebd1c","type":"Toolbar"},"x_range":{"id":"04f04a36-361c-4b2f-9a4f-08f1e91b4675","type":"DataRange1d"},"y_range":{"id":"12b72278-84a7-4df5-9a00-e9b634fb8366","type":"DataRange1d"}},"id":"ac0d7196-4db5-4bc0-85d0-d4162d7f0707","type":"GMapPlot"},{"attributes":{"callback":null},"id":"12b72278-84a7-4df5-9a00-e9b634fb8366","type":"DataRange1d"},{"attributes":{"lat":39.8282,"lng":-98.5795,"zoom":5},"id":"7ed6af1a-5ea4-41a0-a3db-8e6a98ec82e9","type":"GMapOptions"},{"attributes":{"callback":null},"id":"04f04a36-361c-4b2f-9a4f-08f1e91b4675","type":"DataRange1d"},{"attributes":{"data_source":{"id":"c98632be-934f-4268-8038-d54a8294e9f7","type":"ColumnDataSource"},"glyph":{"id":"0a99c22b-52c4-4971-8c3a-c75be124a62b","type":"Circle"},"hover_glyph":null,"muted_glyph":null},"id":"a556891e-22b8-4031-91ff-ffe85a9cd425","type":"GlyphRenderer"},{"attributes":{"callback":null,"overlay":{"id":"e6d13713-8daf-4ef4-9e97-5154e282fc5a","type":"BoxAnnotation"},"plot":{"id":"ac0d7196-4db5-4bc0-85d0-d4162d7f0707","type":"GMapPlot"}},"id":"95c334e7-9ad9-4f49-be44-fd906459d049","type":"BoxSelectTool"},{"attributes":{"fill_alpha":{"value":0.8},"fill_color":{"value":"blue"},"line_color":{"value":null},"size":{"units":"screen","value":15},"tags":["HOUSTON, TEXAS","CHICAGO, ILLINOIS","MEMPHIS, TENNESSEE","LOUISVILLE, KENTUCKY","SAN ANTONIO, TEXAS","BATON ROUGE, LOUISIANA","PHOENIX, ARIZONA","GARY, INDIANA","JACKSONVILLE, FLORIDA","LOS ANGELES, CALIFORNIA"],"x":{"field":"lon"},"y":{"field":"lat"}},"id":"0a99c22b-52c4-4971-8c3a-c75be124a62b","type":"Circle"},{"attributes":{},"id":"9556dc90-3c31-4bc6-9b9b-2ee2b963d9e1","type":"ToolEvents"},{"attributes":{"active_drag":"auto","active_scroll":"auto","active_tap":"auto","tools":[{"id":"b8873c7c-0e95-49a8-9387-b63a522b3e37","type":"PanTool"},{"id":"dafda9ec-aa65-4a28-baa4-31135c0ae7c8","type":"WheelZoomTool"},{"id":"95c334e7-9ad9-4f49-be44-fd906459d049","type":"BoxSelectTool"}]},"id":"740a2d01-24a7-478a-b59a-11ad712ebd1c","type":"Toolbar"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"e6d13713-8daf-4ef4-9e97-5154e282fc5a","type":"BoxAnnotation"},{"attributes":{"plot":{"id":"ac0d7196-4db5-4bc0-85d0-d4162d7f0707","type":"GMapPlot"}},"id":"dafda9ec-aa65-4a28-baa4-31135c0ae7c8","type":"WheelZoomTool"},{"attributes":{"plot":{"id":"ac0d7196-4db5-4bc0-85d0-d4162d7f0707","type":"GMapPlot"}},"id":"b8873c7c-0e95-49a8-9387-b63a522b3e37","type":"PanTool"},{"attributes":{"callback":null,"column_names":["lat","lon"],"data":{"lat":[29.7589382,41.8755546,35.1490215,38.2542376,29.4246002,30.4507462,33.4485866,41.6021292,30.3321838,34.054935],"lon":[-95.3676973,-87.6244211,-90.0516284,-85.7594069,-98.4951404,-91.1545509,-112.0773455,-87.3371371,-81.6556509,-118.2444759]}},"id":"c98632be-934f-4268-8038-d54a8294e9f7","type":"ColumnDataSource"},{"attributes":{"plot":null,"text":"Top ten cities"},"id":"722474f0-3a76-476a-9ddf-0a8e26156e8c","type":"Title"}],"root_ids":["ac0d7196-4db5-4bc0-85d0-d4162d7f0707"]},"title":"Bokeh Application","version":"0.12.5"}};
+              var render_items = [{"docid":"19ff9558-bc49-44f6-8d3d-c8cafdbeee29","elementid":"9c75c202-9109-4d88-b19e-d85627e3e10c","modelid":"ac0d7196-4db5-4bc0-85d0-d4162d7f0707"}];
+              
+              Bokeh.embed.embed_items(docs_json, render_items);
+            });
+          };
+          if (document.readyState != "loading") fn();
+          else document.addEventListener("DOMContentLoaded", fn);
+        })();
+        
+        </script>
+    </body>
+</html>
