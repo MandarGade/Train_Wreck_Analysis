@@ -9,4 +9,8 @@ Run train_wreck_flask.py file in command line or terminal as python train_wreck_
 Use localhost url in browser to interact with the application.
 
 #Screencaptures
+1. Home Page
+![alt text]("https://github.com/MandarGade/Train_Wreck_Analysis/tree/master/static/images/screen-shots/home.png")
 
+2. Map of top ten cities
+![alt text]("https://github.com/MandarGade/Train_Wreck_Analysis/tree/master/static/images/screen-shots/map.png")
